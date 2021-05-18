@@ -29,11 +29,16 @@ public class FavoritesPage extends BasePage{
                 .until(ExpectedConditions.presenceOfAllElementsLocatedBy(removesLocator));
     }
     public boolean isInFavorites(String name){
-        for(WebElement movie: favoriteMovies){
-            if(movie.getText().equals(name))
-                return true;
+        try {
+            for(WebElement movie: favoriteMovies){
+                if(movie.getText().equals(name))
+                    return true;
+            }
+            return false;
         }
-        return false;
+        catch (Exception e){
+            return false;
+        }
     }
 
     public void remove(int index){

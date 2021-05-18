@@ -11,13 +11,15 @@ public class AccountSettings extends BasePage{
     private By sName = By.name("user[lastname]");
     private By saveChangesButton = By.xpath("//body/div[1]/div[2]/div[2]/div[2]/form[1]/p[6]/input[1]");
     private By nameWasChanged = By.xpath("//*[@id=\"cmn_wrap\"]/div[2]/div[2]/div");
+    private By name = By.xpath("//header/span[1]");
+    private By noChangesLocator = By.xpath("//div[contains(text(),'No changes were made to your information')]");
 
 
     public AccountSettings(WebDriver driver) {
         super(driver);
     }
 
-    public void changeName(String newFName, String newSName){
+    public WebElement changeName(String newFName, String newSName){
         WebElement fNameField = new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.elementToBeClickable(fName));
         fNameField.clear();
@@ -32,7 +34,17 @@ public class AccountSettings extends BasePage{
                 .until(ExpectedConditions.elementToBeClickable(saveChangesButton));
         save.click();
 
-        new WebDriverWait(driver, 10)
+        return new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.visibilityOfElementLocated(nameWasChanged));
+    }
+
+    public boolean noChanges(){
+        return new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.visibilityOfElementLocated(noChangesLocator)).isDisplayed();
+    }
+
+    public String getCurrentName(){
+        return  new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.visibilityOfElementLocated(name)).getText();
     }
 }
